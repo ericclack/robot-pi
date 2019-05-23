@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import RPi.GPIO as g
-from time import sleep
+from time import sleep, time
 
 g.setwarnings(False)
 g.setmode(g.BOARD)
@@ -19,6 +19,9 @@ LEDs = [7,11,18,22]
 for led in LEDs:
     g.setup(led, g.OUT)
     g.output(led, 1)
+
+# Define Sonar Pin for Trigger and Echo to be the same
+SONAR = 8
 
 # -----------------------------------
 
@@ -73,6 +76,37 @@ def turn_right(s):
     right_backwards()
     sleep(s)
     stop()
+
+def turn_left(s):
+    left_backwards()
+    right_forwards()
+    sleep(s)
+    stop()
+
+def get_distance():
+    g.setup(SONAR, g.OUT)
+    # Send 10us pulse to trigger
+    g.output(SONAR, True)
+    sleep(0.00001)
+    g.output(SONAR, False)
+    start = time()
+    count = time()
+    g.setup(SONAR,g.IN)
+    # Now wait for reflection
+    while g.input(SONAR)==0 and time()-count<0.1:
+        start = time()
+    count = time()
+    stop = count
+    # ...and end of reflection
+    while g.input(SONAR)==1 and time()-count<0.1:
+        stop = time()
+    # Calculate pulse length
+    elapsed = stop-start
+    # Distance pulse travelled in that time is time
+    # multiplied by the speed of sound 34000(cm/s) divided by 2
+    distance = elapsed * 17000
+    return distance
+
 
 def cleanup():
     g.cleanup()
