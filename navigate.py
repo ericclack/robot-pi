@@ -9,9 +9,11 @@ from time import sleep
 try:
     while True:
         forwards(0.05)
-	sleep(0.05)
+	#sleep(0.05)
 
         d=get_distance()
+        if d < 10 :
+            backwards(0.5)
         if d < 25 :
             #we want to turn one way or the other
             turn=random.choice([turn_left,turn_right])
