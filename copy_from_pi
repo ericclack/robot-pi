@@ -1,0 +1,1 @@
+rsync -va pi@robotpi:robot-pi/ . --exclude .git

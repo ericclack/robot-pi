@@ -1,0 +1,2 @@
+rsync * "pi@robotpi:~/robot-pi/" --exclude .git
+
