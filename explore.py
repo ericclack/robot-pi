@@ -7,11 +7,11 @@ from time import sleep
 distances = [] # An empty list
 voids = []
 
-threshold = 100
+threshold = 150
 void = 1500
 
 # Battery? 0.05 - Power 0.1
-turn_time = 0.03
+turn_time = 0.04
 steps=30
 
 def check_void(counter, start_void):
@@ -60,6 +60,9 @@ def turn_to_void():
     start,size=biggest_void()
     steps_back=steps-start
     print "step back",steps_back
+    for i in range(steps_back):
+        turn_left(turn_time)
+        sleep(0.2)
 
 try:
     scan()
