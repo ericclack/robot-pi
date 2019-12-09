@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+"""Scan environment and move towards biggest void"""
+
 from robot import *
 import random
 from time import sleep
@@ -7,11 +9,12 @@ from time import sleep
 distances = [] # An empty list
 voids = []
 
-threshold = 100
+threshold = 200
+object_stop = 25
 void = 1500
 
 # Battery? 0.05 - Power 0.1
-turn_time = 0.038
+turn_time = 0.035
 steps=30
 
 def check_void(counter, start_void):
@@ -83,7 +86,7 @@ try:
 
         turn_to_void()
 
-        while get_distance()>50:
+        while get_distance()>object_stop:
             forwards(0.1)
 
 except KeyboardInterrupt:
