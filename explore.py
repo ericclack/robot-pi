@@ -4,15 +4,50 @@ from robot import *
 import random
 from time import sleep
 
-distances=[]
+distances = [] # An empty list
+voids = []
+
+threshold = 100
+void = 1500
+counter = 0
+start_void = 0
+
+# Battery? 0.05 - Power 0.1
+turn_time = 0.05
+
+def check_void(counter, start_void):
+    if counter>0:
+        print "void size is", counter
+        voids.append((start_void, counter))
+
 try:
-    for i in range(80):
+    for i in range(30):
         d=get_distance()
+        if d>=threshold:
+            d=void
         distances.append(d)
-        turn_right(0.05)
+        turn_right(turn_time)
         sleep(0.2)
+
+    i = 0
     for d in distances:
         print "%.2f" % d
+        if d==void:
+            if counter == 0:
+                # Beginning of void
+                start_void = i
+
+            counter+=1
+        else:
+            check_void(counter, start_void)
+            counter=0
+        i += 1
+
+    check_void(counter, start_void)
+
+
+    for start, size in voids:
+        print "Void starting at ", start, " size ", size
 
 except KeyboardInterrupt:
        print "Cleaning up"
