@@ -9,8 +9,6 @@ voids = []
 
 threshold = 100
 void = 1500
-counter = 0
-start_void = 0
 
 # Battery? 0.05 - Power 0.1
 turn_time = 0.05
@@ -20,7 +18,7 @@ def check_void(counter, start_void):
         print "void size is", counter
         voids.append((start_void, counter))
 
-try:
+def scan():
     for i in range(30):
         d=get_distance()
         if d>=threshold:
@@ -29,7 +27,10 @@ try:
         turn_right(turn_time)
         sleep(0.2)
 
+def do_voids():
     i = 0
+    counter = 0
+    start_void = 0
     for d in distances:
         print "%.2f" % d
         if d==void:
@@ -45,6 +46,10 @@ try:
 
     check_void(counter, start_void)
 
+
+try:
+    scan()
+    do_voids()
 
     for start, size in voids:
         print "Void starting at ", start, " size ", size
